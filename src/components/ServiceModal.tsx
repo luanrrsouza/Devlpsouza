@@ -34,3 +34,4 @@ export default function ServiceModal({ open, onClose, title, details }: Props) {
     </div>
   );
 }
+

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 type Slide = {
   id: string;
@@ -16,6 +17,7 @@ type Props = {
   slides: Slide[];
   techs?: string[];
   liveUrl?: string;
+  imageFit?: "cover" | "contain";
 };
 
 export default function ProjectModal({
@@ -26,6 +28,7 @@ export default function ProjectModal({
   slides,
   techs = [],
   liveUrl,
+  imageFit = "cover",
 }: Props) {
   const [index, setIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
@@ -41,6 +44,18 @@ export default function ProjectModal({
     };
   }, [open, slides.length]);
 
+  const next = useCallback(
+    () => setIndex((i) => (i + 1) % Math.max(slides.length, 1)),
+    [slides.length]
+  );
+  const prev = useCallback(
+    () =>
+      setIndex(
+        (i) => (i - 1 + Math.max(slides.length, 1)) % Math.max(slides.length, 1)
+      ),
+    [slides.length]
+  );
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -50,13 +65,7 @@ export default function ProjectModal({
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  const next = () => setIndex((i) => (i + 1) % Math.max(slides.length, 1));
-  const prev = () =>
-    setIndex(
-      (i) => (i - 1 + Math.max(slides.length, 1)) % Math.max(slides.length, 1)
-    );
+  }, [open, onClose, next, prev]);
 
   if (!open) return null;
 
@@ -114,7 +123,11 @@ export default function ProjectModal({
                     if (start == null) return;
                     const dx = e.changedTouches[0].clientX - start;
                     if (Math.abs(dx) > 50) {
-                      dx < 0 ? next() : prev();
+                      if (dx < 0) {
+                        next();
+                      } else {
+                        prev();
+                      }
                     }
                     touchStartX.current = null;
                   }}
@@ -139,7 +152,11 @@ export default function ProjectModal({
                               src={slides[index]!.src as string}
                               alt=""
                               fill
-                              className="object-cover"
+                              className={
+                                imageFit === "contain"
+                                  ? "object-contain"
+                                  : "object-cover"
+                              }
                               sizes="100vw"
                               priority={true}
                               quality={80}
@@ -185,18 +202,26 @@ export default function ProjectModal({
                   </p>
                 </div>
 
-                {liveUrl && (
-                  <div className="flex gap-3">
-                    <a
-                      href={liveUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center rounded-md bg-brand text-white px-4 py-2 text-sm hover:opacity-90"
-                    >
-                      Ver projeto ao vivo
-                    </a>
-                  </div>
-                )}
+                {liveUrl ? (
+                  liveUrl.startsWith("http") ? (
+                    <div className="flex gap-3">
+                      <a
+                        href={liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center rounded-md bg-brand text-white px-4 py-2 text-sm hover:opacity-90"
+                      >
+                        Ver projeto ao vivo
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="flex gap-3">
+                      <span className="inline-flex items-center rounded-md bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-white px-4 py-2 text-sm">
+                        {liveUrl}
+                      </span>
+                    </div>
+                  )
+                ) : null}
               </div>
             </motion.div>
           </div>

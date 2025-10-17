@@ -26,15 +26,25 @@ const ServiceModal = dynamic(() => import("@/components/ServiceModal"), {
 
 const featured = [
   {
-    name: "Bem Cuidado",
+    name: "+BemCuidado",
     techs: ["React Native", "Node.js"],
     slug: "bem-cuidado",
-    cover: undefined,
-    gallery: [] as string[],
+    cover: "/projects/+BemCuidado/+BemCuidado1.png",
+    gallery: [
+      "/projects/+BemCuidado/+BemCuidado1.png",
+      "/projects/+BemCuidado/+BemCuidado2.png",
+      "/projects/+BemCuidado/+BemCuidado3.png",
+      "/projects/+BemCuidado/+BemCuidado4.png",
+      "/projects/+BemCuidado/+BemCuidado5.png",
+      "/projects/+BemCuidado/+BemCuidado6.png",
+      "/projects/+BemCuidado/+BemCuidado7.png",
+      "/projects/+BemCuidado/+BemCuidado8.png",
+      "/projects/+BemCuidado/+BemCuidado9.png",
+      "/projects/+BemCuidado/+BemCuidado10.png",
+    ],
     description:
-      "Aplicativo mobile para gestão de saúde. Intuitivo e acessível, com foco na experiência do usuário e integração de dados.",
-    liveUrl: "#",
-    repoUrl: "#",
+      "+BemCuidado é um aplicativo desenvolvido pensando especialmente no bem-estar e autonomia de idosos.\n\nO app reúne diversas funcionalidades para facilitar o dia a dia e promover saúde e qualidade de vida, incluindo:\n\n• Registro da ingestão de água\n• Sugestões de exercícios físicos adequados\n• Controle de consultas médicas e medicamentos, com lembretes inteligentes\n• Jogos e atividades cognitivas para estimular a mente\n• Diário pessoal (escrito ou falado), para registrar pensamentos e sentimentos\n\nO design prioriza usabilidade, clareza e acessibilidade, garantindo que mesmo usuários com pouca experiência digital consigam navegar com facilidade.\n\nCada funcionalidade foi pensada para promover independência, saúde e bem-estar, tornando o +BemCuidado mais do que um app: uma ferramenta completa para cuidar do dia a dia de forma prática e intuitiva.",
+    liveUrl: "Em lançamento",
   },
   {
     name: "CeosCard",
@@ -219,7 +229,7 @@ export default function Home() {
               d: "Depois de publicado, continuo por perto. Ajustes, otimizações e novas ideias são parte do processo de evolução da sua solução.",
               I: Rocket,
             },
-          ].map(({ t, d, I }, i) => (
+          ].map(({ t, d, I }) => (
             <motion.div
               key={t}
               className="rounded-3xl border border-black/10 dark:border-white/10 p-8 lg:p-10 bg-background shadow-sm hover:shadow-xl min-h-[260px]"
@@ -285,6 +295,7 @@ export default function Home() {
               techs={p.techs}
               cover={p.cover}
               onOpen={() => setOpen(p.name)}
+              fit={p.slug === "bem-cuidado" ? "contain" : "cover"}
             />
           ))}
         </div>
@@ -369,9 +380,9 @@ export default function Home() {
             Cases de sucesso
           </h2>
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {[1, 2].map((i) => (
+            {[1, 2].map((n) => (
               <blockquote
-                key={i}
+                key={n}
                 className="rounded-xl border-l-4 border-brand p-6 bg-white/5 backdrop-blur shadow-sm hover:-translate-y-0.5 transition"
               >
                 <p className="text-base text-white/90">
@@ -492,7 +503,7 @@ export default function Home() {
                 t: "Indicação",
                 d: "Indicou e fechou? Você recebe 5% do valor acordado como agradecimento.",
               },
-            ].map(({ I, t, d }, i) => (
+            ].map(({ I, t, d }) => (
               <motion.div
                 key={t}
                 className="rounded-3xl border border-black/10 dark:border-white/10 p-8 bg-background shadow-sm hover:shadow-xl"
@@ -572,16 +583,20 @@ export default function Home() {
           open ? featured.find((f) => f.name === open)?.description ?? "" : ""
         }
         slides={
-          (open
+          open
             ? (featured.find((f) => f.name === open)?.gallery || []).map(
-                (src, i) => ({ id: `${open}-slide-${i}`, src })
+                (src, idx): { id: string; src: string } => ({
+                  id: `${open}-slide-${idx}`,
+                  src,
+                })
               )
-            : []) as any
+            : []
         }
         techs={open ? featured.find((f) => f.name === open)?.techs : []}
         liveUrl={
           open ? featured.find((f) => f.name === open)?.liveUrl : undefined
         }
+        imageFit={open === "+BemCuidado" ? "contain" : "cover"}
       />
       <ServiceModal
         open={serviceOpen !== null}
