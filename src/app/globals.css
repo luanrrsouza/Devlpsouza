@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --brand: #0ea5e9;
+  --muted: #f7f9fc;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #e5e7eb;
+    --muted: #0f172a;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.brand-gradient {
+  background-image: radial-gradient(
+      1000px 400px at 10% -10%,
+      color-mix(in oklab, var(--color-brand), transparent 80%),
+      transparent
+    ),
+    radial-gradient(
+      1000px 400px at 90% -10%,
+      color-mix(in oklab, var(--color-brand), transparent 80%),
+      transparent
+    );
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.future-overlay {
+  position: relative;
+  overflow: hidden;
+}
+.future-overlay::before {
+  content: "";
+  position: absolute;
+  inset: -120px;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    rgba(14, 165, 233, 0.12),
+    transparent 50%
+  );
+  filter: blur(60px);
+  animation: spin 16s linear infinite;
+  pointer-events: none;
+}
+
+.future-section {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+      800px 300px at 10% 0%,
+      rgba(14, 165, 233, 0.18),
+      transparent
+    ),
+    radial-gradient(
+      800px 300px at 90% 0%,
+      rgba(168, 85, 247, 0.16),
+      transparent
+    ),
+    linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
+}
+.future-section::before {
+  content: "";
+  position: absolute;
+  inset: -120px;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    rgba(14, 165, 233, 0.12),
+    transparent 50%
+  );
+  filter: blur(60px);
+  animation: spin 16s linear infinite;
+  pointer-events: none;
+}
+
+.future-light {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+      700px 260px at 15% 0%,
+      rgba(14, 165, 233, 0.14),
+      transparent
+    ),
+    radial-gradient(
+      700px 260px at 85% 0%,
+      rgba(168, 85, 247, 0.12),
+      transparent
+    ),
+    linear-gradient(180deg, #f8fbff 0%, #eef7ff 100%);
+}
+.future-light::before {
+  content: "";
+  position: absolute;
+  inset: -100px;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(14, 165, 233, 0.1),
+    transparent 60%
+  );
+  filter: blur(50px);
+  animation: spin 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.about-aurora {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+      600px 220px at 20% 0%,
+      rgba(14, 165, 233, 0.16),
+      transparent
+    ),
+    radial-gradient(
+      600px 220px at 80% 10%,
+      rgba(99, 102, 241, 0.12),
+      transparent
+    ),
+    linear-gradient(180deg, #f6fbff 0%, #eef7ff 100%);
+}
+.about-aurora::before {
+  content: "";
+  position: absolute;
+  inset: -120px;
+  background: conic-gradient(
+    from 45deg at 50% 50%,
+    rgba(14, 165, 233, 0.08),
+    transparent 60%
+  );
+  filter: blur(70px);
+  animation: spin 24s linear infinite;
+  pointer-events: none;
+}
+
+.cases-mesh {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0b1220 0%, #0e152b 100%);
+}
+.cases-mesh::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(14, 165, 233, 0.06),
+      rgba(14, 165, 233, 0.06)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 22px,
+      rgba(255, 255, 255, 0.04) 23px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 22px,
+      rgba(255, 255, 255, 0.04) 23px
+    );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.cases-mesh::after {
+  content: "";
+  position: absolute;
+  inset: -120px;
+  background: radial-gradient(
+    600px 220px at 50% -10%,
+    rgba(99, 102, 241, 0.12),
+    transparent
+  );
+  filter: blur(60px);
+  pointer-events: none;
+}
