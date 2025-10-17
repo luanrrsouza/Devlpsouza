@@ -37,6 +37,7 @@ export default function ProjectModal({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [crossfade, setCrossfade] = useState(false);
+  const AUTO_INTERVAL_MS = 6500;
 
   useEffect(() => {
     if (!open) return;
@@ -44,11 +45,12 @@ export default function ProjectModal({
       if (intervalRef.current) window.clearInterval(intervalRef.current);
       intervalRef.current = window.setInterval(() => {
         if (!pausedByClick.current && imageLoaded) {
-          setPrevIndex((cur) => (cur === null ? index : cur));
+          setPrevIndex(index);
+          setImageLoaded(false);
           setCrossfade(true);
           setIndex((i) => (i + 1) % Math.max(slides.length, 1));
         }
-      }, 3000);
+      }, AUTO_INTERVAL_MS);
     };
     start();
     return () => {
