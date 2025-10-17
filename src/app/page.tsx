@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+// revertendo tipos estáticos para evitar erros por enquanto
 import { Sparkles, PencilRuler, Code2, Rocket } from "lucide-react";
 import Image from "next/image";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
@@ -16,20 +17,73 @@ const ServiceModal = dynamic(() => import("@/components/ServiceModal"), {
   ssr: false,
 });
 const AboutSection = dynamic(
-  () => import("@/components/sections/AboutSection")
+  () => import("@/components/sections/AboutSection"),
+  {
+    loading: () => (
+      <div className="container mx-auto px-4 py-20">
+        <div className="h-8 w-64 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
+        <div className="mt-6 h-40 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+      </div>
+    ),
+  }
 );
 const CasesSection = dynamic(
-  () => import("@/components/sections/CasesSection")
+  () => import("@/components/sections/CasesSection"),
+  {
+    loading: () => (
+      <div className="container mx-auto px-4 py-20">
+        <div className="h-8 w-64 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="h-28 bg-white/10 rounded animate-pulse" />
+          <div className="h-28 bg-white/10 rounded animate-pulse" />
+        </div>
+      </div>
+    ),
+  }
 );
 const PartnersSection = dynamic(
-  () => import("@/components/sections/PartnersSection")
+  () => import("@/components/sections/PartnersSection"),
+  {
+    loading: () => (
+      <div className="container mx-auto px-4 py-24">
+        <div className="h-8 w-72 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="h-40 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+          <div className="h-40 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+          <div className="h-40 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+        </div>
+      </div>
+    ),
+  }
 );
 const ContactSection = dynamic(
-  () => import("@/components/sections/ContactSection")
+  () => import("@/components/sections/ContactSection"),
+  {
+    loading: () => (
+      <div className="container mx-auto px-4 py-20">
+        <div className="h-8 w-80 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
+        <div className="mt-8 h-48 max-w-xl bg-black/5 dark:bg-white/5 rounded mx-auto animate-pulse" />
+      </div>
+    ),
+  }
 );
 const OfferSection = dynamic(
-  () => import("@/components/sections/OfferSection")
+  () => import("@/components/sections/OfferSection"),
+  {
+    loading: () => (
+      <div className="container mx-auto px-4 py-20">
+        <div className="h-8 w-72 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="h-48 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+          <div className="h-48 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+          <div className="h-48 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
+        </div>
+      </div>
+    ),
+  }
 );
+
+// (imports estáticos removidos)
 
 const featured = [
   {
@@ -286,35 +340,38 @@ export default function Home() {
 
       <FloatingWhatsApp />
 
-      <ProjectModal
-        open={open !== null}
-        onClose={() => setOpen(null)}
-        name={open ?? ""}
-        description={
-          open ? featured.find((f) => f.name === open)?.description ?? "" : ""
-        }
-        slides={
-          open
-            ? (featured.find((f) => f.name === open)?.gallery || []).map(
-                (src, idx): { id: string; src: string } => ({
-                  id: `${open}-slide-${idx}`,
-                  src,
-                })
-              )
-            : []
-        }
-        techs={open ? featured.find((f) => f.name === open)?.techs : []}
-        liveUrl={
-          open ? featured.find((f) => f.name === open)?.liveUrl : undefined
-        }
-        imageFit={open === "+BemCuidado" ? "contain" : "cover"}
-      />
-      <ServiceModal
-        open={serviceOpen !== null}
-        onClose={() => setServiceOpen(null)}
-        title={serviceOpen ?? ""}
-        details={"Detalhes do serviço, processo de trabalho e próximos passos."}
-      />
+      {open !== null ? (
+        <ProjectModal
+          open={true}
+          onClose={() => setOpen(null)}
+          name={open ?? ""}
+          description={
+            open ? featured.find((f) => f.name === open)?.description ?? "" : ""
+          }
+          slides={
+            open
+              ? (featured.find((f) => f.name === open)?.gallery || []).map(
+                  (src, idx) => ({ id: `${open}-slide-${idx}`, src })
+                )
+              : []
+          }
+          techs={open ? featured.find((f) => f.name === open)?.techs : []}
+          liveUrl={
+            open ? featured.find((f) => f.name === open)?.liveUrl : undefined
+          }
+          imageFit={open === "+BemCuidado" ? "contain" : "cover"}
+        />
+      ) : null}
+      {serviceOpen !== null ? (
+        <ServiceModal
+          open={true}
+          onClose={() => setServiceOpen(null)}
+          title={serviceOpen ?? ""}
+          details={
+            "Detalhes do serviço, processo de trabalho e próximos passos."
+          }
+        />
+      ) : null}
     </div>
   );
 }

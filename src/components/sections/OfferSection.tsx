@@ -56,7 +56,7 @@ export default function OfferSection() {
         <h2 className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
           O que posso te oferecer?
         </h2>
-        <p className="mt-3 text-black/70 dark:text-white/70 max-w-3xl">
+        <p className="mt-3 text-slate-900 max-w-3xl">
           Cada projeto que desenvolvo é feito sob medida — sem fórmulas prontas,
           com foco em resultado, usabilidade e identidade. Abaixo estão os
           serviços principais, explicados de forma direta pra você entender

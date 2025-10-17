@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { memo } from "react";
 
 type Props = {
   name: string;
   techs: string[];
-  cover?: string;
+  cover?: string | StaticImageData;
   onOpen: () => void;
   fit?: "cover" | "contain";
 };
@@ -31,7 +31,7 @@ function ProjectCard({ name, techs, cover, onOpen, fit = "cover" }: Props) {
             alt={name}
             fill
             className={fit === "contain" ? "object-contain" : "object-cover"}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
             priority={false}
           />
         ) : (

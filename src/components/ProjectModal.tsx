@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 type Slide = {
   id: string;
-  src?: string;
+  src?: string | StaticImageData;
 };
 
 type Props = {
@@ -163,7 +163,9 @@ export default function ProjectModal({
                         >
                           {slides[index]?.src ? (
                             <Image
-                              src={slides[index]!.src as string}
+                              src={
+                                slides[index]!.src as StaticImageData | string
+                              }
                               alt=""
                               fill
                               className={
@@ -171,7 +173,7 @@ export default function ProjectModal({
                                   ? "object-contain"
                                   : "object-cover"
                               }
-                              sizes="100vw"
+                              sizes="(max-width: 768px) 100vw, 1024px"
                               priority={true}
                               quality={80}
                             />

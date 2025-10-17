@@ -11,13 +11,7 @@ export default function AboutSection() {
       className="about-aurora-static border-y border-black/5 dark:border-white/10 reveal relative"
     >
       <div className="container mx-auto px-4 py-16 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="rounded-2xl border border-black/10 bg-white/90 backdrop-blur p-6 sm:p-8 grid gap-8 lg:gap-12 xl:gap-16 sm:grid-cols-[220px_1fr] items-center shadow relative"
-        >
+        <div className="rounded-2xl border border-black/10 bg-white/90 backdrop-blur p-6 sm:p-8 grid gap-8 lg:gap-12 xl:gap-16 sm:grid-cols-[220px_1fr] items-center shadow relative">
           <div className="justify-self-center sm:justify-self-start relative">
             <Image
               src={perfil}
@@ -31,23 +25,11 @@ export default function AboutSection() {
               sizes="(max-width: 640px) 224px, 224px"
             />
           </div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="self-center"
-          >
+          <div className="self-center">
             <h2 className="text-3xl sm:text-4xl font-semibold text-brand text-center sm:text-left">
               Quem sou eu?
             </h2>
-            <motion.p
-              className="mt-3 text-slate-800 mx-auto sm:mx-0 max-w-2xl text-lg leading-relaxed text-center sm:text-left"
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
+            <p className="mt-3 text-slate-800 mx-auto sm:mx-0 max-w-2xl text-lg leading-relaxed text-center sm:text-left">
               Me chamo Luan, sou apaixonado por {""}
               <span className="bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
                 tecnologia
@@ -70,9 +52,9 @@ export default function AboutSection() {
               </span>
               , tecnologia e curiosidade para construir projetos que realmente
               façam diferença — e, claro, me divertir no caminho.
-            </motion.p>
-          </motion.div>
-        </motion.div>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

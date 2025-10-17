@@ -86,7 +86,8 @@ button,
     transparent 50%
   );
   filter: blur(60px);
-  animation: spin 16s linear infinite;
+  /* performance: desativa animação contínua */
+  animation: none;
   pointer-events: none;
 }
 
@@ -115,7 +116,7 @@ button,
     transparent 50%
   );
   filter: blur(60px);
-  animation: spin 16s linear infinite;
+  animation: none;
   pointer-events: none;
 }
 
@@ -144,7 +145,7 @@ button,
     transparent 60%
   );
   filter: blur(50px);
-  animation: spin 20s linear infinite;
+  animation: none;
   pointer-events: none;
 }
 
@@ -179,7 +180,7 @@ button,
     transparent 60%
   );
   filter: blur(70px);
-  animation: spin 24s linear infinite;
+  animation: none;
   pointer-events: none;
 }
 
