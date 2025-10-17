@@ -88,7 +88,6 @@ const OfferSection = dynamic(
         </div>
       </div>
     ),
-    ssr: false,
   }
 );
 
