@@ -135,8 +135,10 @@ export default function ProjectModal({
                 }
                 touchStartX.current = null;
               }}
-              onClick={() => {
-                pausedByClick.current = !pausedByClick.current;
+              onClick={(e) => {
+                if (e.currentTarget === e.target) {
+                  pausedByClick.current = !pausedByClick.current;
+                }
               }}
             >
               {slides.length === 0 ? (
@@ -203,14 +205,20 @@ export default function ProjectModal({
                     ) : null}
                   </div>
                   <button
-                    onClick={prev}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      prev();
+                    }}
                     aria-label="Anterior"
                     className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
                   >
                     ‹
                   </button>
                   <button
-                    onClick={next}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      next();
+                    }}
                     aria-label="Próximo"
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
                   >
