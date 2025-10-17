@@ -35,14 +35,36 @@ export default function Header() {
         </Link>
 
         <button
-          className="sm:hidden inline-flex items-center justify-center rounded-md px-3 py-2 border border-black/10 dark:border-white/10"
+          className="md:hidden inline-flex items-center justify-center rounded-md px-3 py-2 border border-black/10 dark:border-white/10"
           aria-label="Abrir menu"
           onClick={() => setOpen((v) => !v)}
         >
           <span className="sr-only">Menu</span>☰
         </button>
 
-        <nav className="hidden sm:flex items-center gap-8 text-lg">
+        <nav className="hidden md:flex items-center gap-8 text-lg">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById("oferta");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="hover:text-brand transition-colors"
+          >
+            O que posso te oferecer
+          </a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById("passos");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="hover:text-brand transition-colors"
+          >
+            Passo a passo
+          </a>
           <a
             href="#"
             onClick={(e) => {
@@ -58,12 +80,12 @@ export default function Header() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              const el = document.getElementById("oferta");
+              const el = document.getElementById("sobre");
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
             className="hover:text-brand transition-colors"
           >
-            O que posso te oferecer
+            Quem sou eu?
           </a>
           <a
             href="#"
@@ -80,12 +102,12 @@ export default function Header() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              const el = document.getElementById("sobre");
+              const el = document.getElementById("parcerias");
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
             className="hover:text-brand transition-colors"
           >
-            Sobre mim
+            Parcerias
           </a>
           <button
             onClick={() => {
@@ -100,8 +122,26 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="sm:hidden border-t border-black/5 dark:border-white/10">
-          <nav className="px-4 py-3 grid gap-3 text-base">
+        <div className="md:hidden border-t border-black/5 dark:border-white/10 bg-background/95 backdrop-blur">
+          <nav className="px-4 py-4 grid gap-4 text-lg">
+            <button
+              onClick={() => {
+                const el = document.getElementById("oferta");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+                setOpen(false);
+              }}
+            >
+              O que posso te oferecer
+            </button>
+            <button
+              onClick={() => {
+                const el = document.getElementById("passos");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+                setOpen(false);
+              }}
+            >
+              Passo a passo
+            </button>
             <button
               onClick={() => {
                 const el = document.getElementById("projetos");
@@ -113,12 +153,12 @@ export default function Header() {
             </button>
             <button
               onClick={() => {
-                const el = document.getElementById("oferta");
+                const el = document.getElementById("sobre");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
                 setOpen(false);
               }}
             >
-              O que posso te oferecer
+              Quem sou eu?
             </button>
             <button
               onClick={() => {
@@ -131,12 +171,12 @@ export default function Header() {
             </button>
             <button
               onClick={() => {
-                const el = document.getElementById("sobre");
+                const el = document.getElementById("parcerias");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
                 setOpen(false);
               }}
             >
-              Sobre mim
+              Parcerias
             </button>
             <button
               onClick={() => {

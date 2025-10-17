@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Slide = {
   id: string;
@@ -13,6 +14,8 @@ type Props = {
   name: string;
   description: string;
   slides: Slide[];
+  techs?: string[];
+  liveUrl?: string;
 };
 
 export default function ProjectModal({
@@ -21,9 +24,12 @@ export default function ProjectModal({
   name,
   description,
   slides,
+  techs = [],
+  liveUrl,
 }: Props) {
   const [index, setIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -35,57 +41,167 @@ export default function ProjectModal({
     };
   }, [open, slides.length]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const next = () => setIndex((i) => (i + 1) % Math.max(slides.length, 1));
+  const prev = () =>
+    setIndex(
+      (i) => (i - 1 + Math.max(slides.length, 1)) % Math.max(slides.length, 1)
+    );
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[60]">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="absolute inset-0 grid place-items-center p-4">
-        <div className="w-full max-w-4xl rounded-2xl bg-background border border-white/10 overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-            <h3 className="text-xl font-semibold">{name}</h3>
-            <button
-              onClick={onClose}
-              className="rounded-md border px-3 py-1 text-sm"
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[60]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+          <div className="absolute inset-0 grid place-items-center p-4">
+            <motion.div
+              className="w-full max-w-5xl rounded-2xl bg-white dark:bg-slate-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
+              initial={{ scale: 0.96, opacity: 0.8 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.96, opacity: 0.8 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
             >
-              Fechar
-            </button>
-          </div>
-          <div className="grid gap-6 p-6">
-            <p className="text-sm text-black/80 dark:text-white/80">
-              {description}
-            </p>
-            <div className="relative aspect-[16/9] rounded-lg border border-white/10 overflow-hidden">
-              {slides.length === 0 ? (
-                <div className="h-full w-full grid place-items-center bg-black/5 dark:bg-white/5">
-                  <div className="h-24 w-36 rounded-md bg-black/10 dark:bg-white/10" />
-                </div>
-              ) : (
-                <div className="h-full w-full">
-                  {slides.map((s, i) => (
-                    <div
-                      key={s.id}
-                      className={`absolute inset-0 transition-opacity duration-700 ${
-                        i === index ? "opacity-100" : "opacity-0"
-                      }`}
-                    >
-                      {s.src ? (
-                        <img
-                          src={s.src}
-                          alt=""
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-full w-full grid place-items-center bg-black/5 dark:bg-white/5" />
-                      )}
+              <div className="flex items-start justify-between px-6 py-5 border-b border-black/10 dark:border-white/10">
+                <div>
+                  <h3 className="text-2xl font-semibold">{name}</h3>
+                  {techs.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {techs.map((t) => (
+                        <span
+                          key={t}
+                          className="text-xs bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white px-2 py-1 rounded-md transition-transform duration-200 hover:scale-[1.05] hover:shadow"
+                        >
+                          {t}
+                        </span>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
-            </div>
+                <button
+                  onClick={onClose}
+                  aria-label="Fechar"
+                  className="rounded-md border border-black/10 dark:border-white/10 px-3 py-1 text-sm hover:bg-black/5 dark:hover:bg-white/10 transition"
+                >
+                  Fechar
+                </button>
+              </div>
+
+              <div className="grid gap-6 p-6">
+                <div
+                  className="relative aspect-[16/9] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5"
+                  onTouchStart={(e) =>
+                    (touchStartX.current = e.touches[0].clientX)
+                  }
+                  onTouchEnd={(e) => {
+                    const start = touchStartX.current;
+                    if (start == null) return;
+                    const dx = e.changedTouches[0].clientX - start;
+                    if (Math.abs(dx) > 50) {
+                      dx < 0 ? next() : prev();
+                    }
+                    touchStartX.current = null;
+                  }}
+                >
+                  {slides.length === 0 ? (
+                    <div className="h-full w-full grid place-items-center">
+                      <div className="h-24 w-36 rounded-md bg-black/10 dark:bg-white/10" />
+                    </div>
+                  ) : (
+                    <>
+                      <AnimatePresence initial={false} mode="wait">
+                        <motion.div
+                          key={slides[index]?.id}
+                          className="absolute inset-0"
+                          initial={{ opacity: 0.2, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                        >
+                          {slides[index]?.src ? (
+                            <Image
+                              src={slides[index]!.src as string}
+                              alt=""
+                              fill
+                              className="object-cover"
+                              sizes="100vw"
+                              priority={true}
+                              quality={80}
+                            />
+                          ) : null}
+                        </motion.div>
+                      </AnimatePresence>
+                      <button
+                        onClick={prev}
+                        aria-label="Anterior"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
+                      >
+                        ‹
+                      </button>
+                      <button
+                        onClick={next}
+                        aria-label="Próximo"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
+                      >
+                        ›
+                      </button>
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                        {slides.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setIndex(i)}
+                            aria-label={`Ir para imagem ${i + 1}`}
+                            className={`h-2.5 w-2.5 rounded-full ${
+                              i === index
+                                ? "bg-white"
+                                : "bg-white/40 hover:bg-white/70"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-sm leading-relaxed text-slate-700 dark:text-white/80">
+                    {description}
+                  </p>
+                </div>
+
+                {liveUrl && (
+                  <div className="flex gap-3">
+                    <a
+                      href={liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center rounded-md bg-brand text-white px-4 py-2 text-sm hover:opacity-90"
+                    >
+                      Ver projeto ao vivo
+                    </a>
+                  </div>
+                )}
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

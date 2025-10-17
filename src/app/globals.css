@@ -31,6 +31,16 @@ body {
   line-height: 1.6;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .future-overlay::before,
+  .future-section::before,
+  .future-light::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 .brand-gradient {
   background-image: radial-gradient(
       1000px 400px at 10% -10%,
@@ -165,6 +175,34 @@ body {
   pointer-events: none;
 }
 
+.about-aurora-static {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+      600px 220px at 20% 0%,
+      rgba(14, 165, 233, 0.16),
+      transparent
+    ),
+    radial-gradient(
+      600px 220px at 80% 10%,
+      rgba(99, 102, 241, 0.12),
+      transparent
+    ),
+    linear-gradient(180deg, #f6fbff 0%, #eef7ff 100%);
+}
+.about-aurora-static::before {
+  content: "";
+  position: absolute;
+  inset: -120px;
+  background: conic-gradient(
+    from 45deg at 50% 50%,
+    rgba(14, 165, 233, 0.08),
+    transparent 60%
+  );
+  filter: blur(70px);
+  pointer-events: none;
+}
+
 .cases-mesh {
   position: relative;
   overflow: hidden;
@@ -204,4 +242,144 @@ body {
   );
   filter: blur(60px);
   pointer-events: none;
+}
+
+.orbit {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.orbit-items {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+.orbit-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a)));
+  transform-origin: center;
+}
+.orbit-tilt {
+  transform: scaleY(0.6) rotate(22deg);
+  transform-origin: center;
+}
+.saturn-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170%;
+  height: 170%;
+  border: 2px solid rgba(14, 165, 233, 0.35);
+  border-radius: 9999px;
+  transform: translate(-50%, -50%) scaleY(0.6) rotate(22deg);
+  filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.25));
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-orbit] {
+    animation: none !important;
+  }
+  .orbit-item {
+    animation: none !important;
+  }
+}
+.orbit-mask {
+  -webkit-mask-image: radial-gradient(circle, transparent 51%, #000 52%);
+  mask-image: radial-gradient(circle, transparent 51%, #000 52%);
+}
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(14, 165, 233, 0));
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.35));
+  }
+}
+
+.orbit-paused [data-orbit] {
+  animation-play-state: paused !important;
+}
+.orbit-paused .orbit-item {
+  animation-play-state: paused !important;
+}
+
+/* Floating background elements for sections */
+.float-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.float-item {
+  position: absolute;
+  opacity: 0.35;
+  filter: drop-shadow(0 2px 8px rgba(14, 165, 233, 0.25));
+  will-change: transform, opacity;
+}
+@keyframes floatY {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-16px);
+  }
+}
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.float-slow {
+  animation: floatY 9s ease-in-out infinite alternate;
+}
+.float-mid {
+  animation: floatY 7s ease-in-out infinite alternate;
+}
+.float-fast {
+  animation: floatY 5.5s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-item {
+    animation: none !important;
+  }
+}
+
+/* Horizontal auto-carousel */
+.carousel-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
+  animation: scrollX var(--carousel-duration, 60s) linear infinite;
+}
+.group:hover .carousel-track {
+  animation-play-state: paused;
+}
+@keyframes scrollX {
+  to {
+    transform: translateX(-50%);
+  }
 }

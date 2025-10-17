@@ -16,15 +16,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Devlpsouza — Portfólio",
-    template: "%s — Devlpsouza",
-  },
+  title: "Devlpsouza",
   description:
     "Criação de sites e aplicações web modernas focadas em performance, SEO e conversão.",
-  metadataBase: undefined,
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
   openGraph: {
-    title: "Devlpsouza — Portfólio",
+    title: "Devlpsouza",
     description:
       "Criação de sites e aplicações web modernas focadas em performance, SEO e conversão.",
     type: "website",
@@ -39,7 +38,9 @@ export const metadata: Metadata = {
     ],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [{ url: "/Logo-Devlpsouza.png", type: "image/png" }],
+    shortcut: [{ url: "/Logo-Devlpsouza.png", type: "image/png" }],
+    apple: [{ url: "/Logo-Devlpsouza.png", type: "image/png" }],
   },
 };
 
@@ -51,6 +52,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="min-h-dvh flex flex-col">
