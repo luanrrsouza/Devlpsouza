@@ -24,7 +24,7 @@ export default function FloatingWhatsApp() {
   return (
     <a
       href="https://wa.me/5583986645644"
-      className="fixed right-6 z-50 rounded-full bg-green-500 text-white px-6 py-4 shadow-xl hover:opacity-90"
+      className="fixed right-4 sm:right-6 z-50 rounded-full bg-green-500 text-white px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base shadow-xl hover:opacity-90"
       style={{ bottom: raised ? 112 : 24 }}
       target="_blank"
       rel="noreferrer"
@@ -33,4 +33,3 @@ export default function FloatingWhatsApp() {
     </a>
   );
 }
-
