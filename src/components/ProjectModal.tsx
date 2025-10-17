@@ -35,6 +35,8 @@ export default function ProjectModal({
   const touchStartX = useRef<number | null>(null);
   const pausedByClick = useRef<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
+  const [crossfade, setCrossfade] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -42,6 +44,8 @@ export default function ProjectModal({
       if (intervalRef.current) window.clearInterval(intervalRef.current);
       intervalRef.current = window.setInterval(() => {
         if (!pausedByClick.current && imageLoaded) {
+          setPrevIndex((cur) => (cur === null ? index : cur));
+          setCrossfade(true);
           setIndex((i) => (i + 1) % Math.max(slides.length, 1));
         }
       }, 3000);
@@ -50,19 +54,22 @@ export default function ProjectModal({
     return () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
     };
-  }, [open, slides.length, imageLoaded]);
+  }, [open, slides.length, imageLoaded, index]);
 
-  const next = useCallback(
-    () => setIndex((i) => (i + 1) % Math.max(slides.length, 1)),
-    [slides.length]
-  );
-  const prev = useCallback(
-    () =>
-      setIndex(
-        (i) => (i - 1 + Math.max(slides.length, 1)) % Math.max(slides.length, 1)
-      ),
-    [slides.length]
-  );
+  const next = useCallback(() => {
+    setPrevIndex(index);
+    setImageLoaded(false);
+    setCrossfade(true);
+    setIndex((i) => (i + 1) % Math.max(slides.length, 1));
+  }, [index, slides.length]);
+  const prev = useCallback(() => {
+    setPrevIndex(index);
+    setImageLoaded(false);
+    setCrossfade(true);
+    setIndex(
+      (i) => (i - 1 + Math.max(slides.length, 1)) % Math.max(slides.length, 1)
+    );
+  }, [index, slides.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -138,8 +145,34 @@ export default function ProjectModal({
                 </div>
               ) : (
                 <>
+                  {prevIndex !== null && (
+                    <div
+                      key={`prev-${slides[prevIndex]?.id}`}
+                      className={`absolute inset-0 cursor-pointer transition-opacity duration-300 ${
+                        crossfade && imageLoaded ? "opacity-0" : "opacity-100"
+                      }`}
+                    >
+                      {slides[prevIndex]?.src ? (
+                        <Image
+                          src={
+                            slides[prevIndex]!.src as StaticImageData | string
+                          }
+                          alt=""
+                          fill
+                          className={
+                            imageFit === "contain"
+                              ? "object-contain"
+                              : "object-cover"
+                          }
+                          sizes="(max-width: 768px) 100vw, 1024px"
+                          priority={false}
+                          quality={60}
+                        />
+                      ) : null}
+                    </div>
+                  )}
                   <div
-                    key={slides[index]?.id}
+                    key={`cur-${slides[index]?.id}`}
                     className={`absolute inset-0 cursor-pointer transition-opacity duration-300 ${
                       imageLoaded ? "opacity-100" : "opacity-0"
                     }`}
@@ -157,7 +190,15 @@ export default function ProjectModal({
                         sizes="(max-width: 768px) 100vw, 1024px"
                         priority={false}
                         quality={60}
-                        onLoadingComplete={() => setImageLoaded(true)}
+                        onLoadingComplete={() => {
+                          setImageLoaded(true);
+                          if (crossfade) {
+                            window.setTimeout(() => {
+                              setPrevIndex(null);
+                              setCrossfade(false);
+                            }, 260);
+                          }
+                        }}
                       />
                     ) : null}
                   </div>
@@ -179,7 +220,13 @@ export default function ProjectModal({
                     {slides.map((_, i) => (
                       <button
                         key={i}
-                        onClick={() => setIndex(i)}
+                        onClick={() => {
+                          if (i === index) return;
+                          setPrevIndex(index);
+                          setImageLoaded(false);
+                          setCrossfade(true);
+                          setIndex(i);
+                        }}
                         aria-label={`Ir para imagem ${i + 1}`}
                         className={`h-2.5 w-2.5 rounded-full ${
                           i === index
