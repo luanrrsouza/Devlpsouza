@@ -34,13 +34,14 @@ export default function ProjectModal({
   const intervalRef = useRef<number | null>(null);
   const touchStartX = useRef<number | null>(null);
   const pausedByClick = useRef<boolean>(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     const start = () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
       intervalRef.current = window.setInterval(() => {
-        if (!pausedByClick.current) {
+        if (!pausedByClick.current && imageLoaded) {
           setIndex((i) => (i + 1) % Math.max(slides.length, 1));
         }
       }, 3000);
@@ -49,7 +50,7 @@ export default function ProjectModal({
     return () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
     };
-  }, [open, slides.length]);
+  }, [open, slides.length, imageLoaded]);
 
   const next = useCallback(
     () => setIndex((i) => (i + 1) % Math.max(slides.length, 1)),
@@ -139,7 +140,9 @@ export default function ProjectModal({
                 <>
                   <div
                     key={slides[index]?.id}
-                    className="absolute inset-0 cursor-pointer animate-slide-in"
+                    className={`absolute inset-0 cursor-pointer transition-opacity duration-300 ${
+                      imageLoaded ? "opacity-100" : "opacity-0"
+                    }`}
                   >
                     {slides[index]?.src ? (
                       <Image
@@ -154,6 +157,7 @@ export default function ProjectModal({
                         sizes="(max-width: 768px) 100vw, 1024px"
                         priority={false}
                         quality={60}
+                        onLoadingComplete={() => setImageLoaded(true)}
                       />
                     ) : null}
                   </div>
