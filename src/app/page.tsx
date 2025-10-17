@@ -3,19 +3,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import {
-  Sparkles,
-  PencilRuler,
-  Code2,
-  Rocket,
-  Palette,
-  Megaphone,
-  Handshake,
-} from "lucide-react";
+import { Sparkles, PencilRuler, Code2, Rocket } from "lucide-react";
 import Image from "next/image";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import ProjectCard from "@/components/ProjectCard";
 import ServiceCard from "@/components/ServiceCard";
-import perfil from "../../public/perfil.jpg";
 
 const ProjectModal = dynamic(() => import("@/components/ProjectModal"), {
   ssr: false,
@@ -23,6 +15,21 @@ const ProjectModal = dynamic(() => import("@/components/ProjectModal"), {
 const ServiceModal = dynamic(() => import("@/components/ServiceModal"), {
   ssr: false,
 });
+const AboutSection = dynamic(
+  () => import("@/components/sections/AboutSection")
+);
+const CasesSection = dynamic(
+  () => import("@/components/sections/CasesSection")
+);
+const PartnersSection = dynamic(
+  () => import("@/components/sections/PartnersSection")
+);
+const ContactSection = dynamic(
+  () => import("@/components/sections/ContactSection")
+);
+const OfferSection = dynamic(
+  () => import("@/components/sections/OfferSection")
+);
 
 const featured = [
   {
@@ -147,39 +154,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="oferta"
-        className="future-light border-y border-black/5 dark:border-white/10 reveal"
-      >
-        <div className="container mx-auto px-4 py-20">
-          <h2 className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
-            O que posso te oferecer
-          </h2>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                t: "Websites e Landing Pages",
-                d: "Sites modernos, otimizados e com alta conversão.",
-              },
-              {
-                t: "Aplicativos Mobile",
-                d: "Apps nativos e híbridos focados em UX e performance.",
-              },
-              {
-                t: "Sistemas e Dashboards",
-                d: "Soluções sob medida para operação e crescimento.",
-              },
-            ].map((s) => (
-              <ServiceCard
-                key={s.t}
-                title={s.t}
-                summary={s.d}
-                onOpen={() => setServiceOpen(s.t)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      <OfferSection />
 
       <motion.section
         id="passos"
@@ -301,279 +276,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="sobre"
-        className="about-aurora-static border-y border-black/5 dark:border-white/10 reveal relative"
-      >
-        <div className="container mx-auto px-4 py-16 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="rounded-2xl border border-black/10 bg-white/90 backdrop-blur p-6 sm:p-8 grid gap-8 lg:gap-12 xl:gap-16 sm:grid-cols-[220px_1fr] items-center shadow relative"
-          >
-            <div className="justify-self-center sm:justify-self-start relative">
-              <Image
-                src={perfil}
-                alt="Perfil"
-                width={224}
-                height={224}
-                className="h-56 w-56 rounded-full object-cover"
-                placeholder="blur"
-                priority={false}
-                quality={75}
-                sizes="(max-width: 640px) 224px, 224px"
-              />
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="self-center"
-            >
-              <h2 className="text-3xl sm:text-4xl font-semibold text-brand text-center sm:text-left">
-                Quem sou eu?
-              </h2>
-              <motion.p
-                className="mt-3 text-slate-800 mx-auto sm:mx-0 max-w-2xl text-lg leading-relaxed text-center sm:text-left"
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              >
-                Me chamo Luan, sou apaixonado por {""}
-                <span className="bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
-                  tecnologia
-                </span>{" "}
-                e ideias diferentes — e acho que isso já dá pra perceber pelo
-                site e pelo meu jeito de trabalhar. Atualmente curso Análise e
-                Desenvolvimento de Sistemas e atuo como desenvolvedor freelance,
-                criando soluções digitais sob medida. Mas nem sempre foi assim…
-                também sou apaixonado por {""}
-                <span className="bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
-                  história
-                </span>
-                , e ainda sonho em ser professor, porque adoro ensinar, trocar
-                experiências e compartilhar conhecimento. Nos meus tempos
-                livres, me arrisco como mágico (sendo sincero, bem ruim 😅),
-                sempre buscando transformar coisas simples em experiências
-                surpreendentes. Meu objetivo? Unir {""}
-                <span className="bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
-                  criatividade
-                </span>
-                , tecnologia e curiosidade para construir projetos que realmente
-                façam diferença — e, claro, me divertir no caminho.
-              </motion.p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <AboutSection />
 
-      <section
-        id="cases"
-        className="cases-mesh border-y border-black/5 dark:border-white/10 reveal"
-      >
-        <div className="container mx-auto px-4 py-20">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-white">
-            Cases de sucesso
-          </h2>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {[1, 2].map((n) => (
-              <blockquote
-                key={n}
-                className="rounded-xl border-l-4 border-brand p-6 bg-white/5 backdrop-blur shadow-sm hover:-translate-y-0.5 transition"
-              >
-                <p className="text-base text-white/90">
-                  “Excelente trabalho! Comunicação clara e entrega no prazo.”
-                </p>
-                <footer className="mt-3 text-xs text-white/60">
-                  Cliente satisfeito
-                </footer>
-              </blockquote>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CasesSection />
 
-      <section
-        id="contato"
-        className="future-section border-t border-black/5 dark:border-white/10 reveal"
-      >
-        <div className="container mx-auto px-4 py-20">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-center">
-            Vamos tirar sua ideia do papel?
-          </h2>
-          <p className="mt-2 text-black/70 dark:text-white/70 text-center">
-            Entre em contato e receba um orçamento sem compromisso.
-          </p>
+      <ContactSection />
 
-          <form
-            action="/api/contact"
-            method="post"
-            className="mt-10 max-w-xl mx-auto grid gap-4"
-          >
-            <input
-              name="name"
-              placeholder="Seu nome"
-              className="rounded-md border px-4 py-3 bg-background"
-              required
-            />
-            <input
-              name="email"
-              type="email"
-              placeholder="Seu e-mail"
-              className="rounded-md border px-4 py-3 bg-background"
-              required
-            />
-            <textarea
-              name="message"
-              placeholder="Sua mensagem"
-              className="rounded-md border px-4 py-3 bg-background min-h-32"
-              required
-            />
-            <button
-              type="submit"
-              className="rounded-md bg-brand text-white px-6 py-3 font-medium"
-            >
-              Enviar mensagem
-            </button>
-          </form>
-        </div>
-      </section>
+      <PartnersSection />
 
-      <motion.section
-        id="parcerias"
-        className="future-light border-t border-black/5 dark:border-white/10 reveal"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.25 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <div className="container mx-auto px-4 py-24">
-          <motion.h2
-            className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            Parcerias & Colaborações
-          </motion.h2>
-          <motion.div
-            className="mt-2"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            <span className="inline-flex items-center gap-2 rounded-full bg-brand text-white px-3 py-1 text-xs sm:text-sm shadow">
-              5% de recompensa em indicações
-            </span>
-          </motion.div>
-          <p className="mt-3 text-slate-800 max-w-3xl text-lg">
-            Adoro trabalhar junto com outros criativos e clientes que querem
-            soluções únicas.
-          </p>
-
-          <motion.div
-            className="relative mt-12 grid grid-cols-1 md:grid-cols-3 gap-6"
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.12 } },
-            }}
-          >
-            {[
-              {
-                I: Palette,
-                t: "Criativo",
-                d: "Designers, ilustradores, marketeiros e mentes inquietas — bora criar algo diferente juntos?",
-              },
-              {
-                I: Handshake,
-                t: "Cliente",
-                d: "Projetos nascem de boas conexões. Se você tem uma ideia, eu ajudo a transformar em experiência digital.",
-              },
-              {
-                I: Megaphone,
-                t: "Indicação",
-                d: "Indicou e fechou? Você recebe 5% do valor acordado como agradecimento.",
-              },
-            ].map(({ I, t, d }) => (
-              <motion.div
-                key={t}
-                className="rounded-3xl border border-black/10 dark:border-white/10 p-8 bg-background shadow-sm hover:shadow-xl"
-                variants={{
-                  hidden: { opacity: 0, y: 18 },
-                  show: { opacity: 1, y: 0 },
-                }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              >
-                <motion.div
-                  className="h-12 w-12 rounded-xl bg-brand/10 text-brand grid place-items-center"
-                  initial={{ opacity: 0, y: -6 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                >
-                  <I size={20} />
-                </motion.div>
-                <h3 className="mt-5 text-2xl font-semibold">{t}</h3>
-                <p className="mt-3 text-base sm:text-lg leading-relaxed text-black/70 dark:text-white/70">
-                  {d}
-                </p>
-              </motion.div>
-            ))}
-            <div className="pointer-events-none absolute left-1/2 top-12 hidden -translate-x-1/2 md:block h-px w-[60%] bg-gradient-to-r from-transparent via-brand/30 to-transparent" />
-          </motion.div>
-
-          <div className="mt-12 flex flex-col sm:flex-row gap-3">
-            <motion.button
-              onClick={() => {
-                const url =
-                  "https://wa.me/5583986645644?text=Oi%20Luan!%20Quero%20colaborar%20ou%20indicar%20algu%C3%A9m.";
-                window.open(url, "_blank");
-              }}
-              className="inline-flex items-center justify-center rounded-md bg-brand text-white px-6 py-3 font-medium shadow-sm"
-              whileHover={{ scale: 1.06 }}
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{
-                duration: 1.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              Quero colaborar ou indicar alguém
-            </motion.button>
-
-            <motion.button
-              onClick={() => {
-                const el = document.getElementById("contato");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center justify-center rounded-md border border-brand text-brand px-6 py-3 font-medium shadow-sm"
-              whileHover={{ scale: 1.04 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              Falar pelo formulário
-            </motion.button>
-          </div>
-        </div>
-      </motion.section>
-
-      <a
-        href="https://wa.me/5583986645644"
-        className="fixed right-6 bottom-6 z-50 rounded-full bg-green-500 text-white px-6 py-4 shadow-xl hover:opacity-90"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Dúvidas? Fale no WhatsApp
-      </a>
+      <FloatingWhatsApp />
 
       <ProjectModal
         open={open !== null}
