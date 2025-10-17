@@ -14,7 +14,6 @@ const FloatingWhatsApp = dynamic(
 );
 import ProjectCard from "@/components/ProjectCard";
 import ServiceCard from "@/components/ServiceCard";
-import ViewportLazy from "@/components/ViewportLazy";
 
 const ProjectModal = dynamic(() => import("@/components/ProjectModal"), {
   ssr: false,
@@ -232,13 +231,9 @@ export default function Home() {
         </div>
       </section>
 
-      <ViewportLazy>
-        <OfferSection />
-      </ViewportLazy>
+      <OfferSection />
 
-      <ViewportLazy>
-        <StepsSection />
-      </ViewportLazy>
+      <StepsSection />
 
       <section id="projetos" className="container mx-auto px-4 py-20 reveal">
         <div className="flex items-end justify-between gap-4">
@@ -269,21 +264,13 @@ export default function Home() {
         </div>
       </section>
 
-      <ViewportLazy>
-        <AboutSection />
-      </ViewportLazy>
+      <AboutSection />
 
-      <ViewportLazy>
-        <CasesSection />
-      </ViewportLazy>
+      <CasesSection />
 
-      <ViewportLazy>
-        <ContactSection />
-      </ViewportLazy>
+      <ContactSection />
 
-      <ViewportLazy>
-        <PartnersSection />
-      </ViewportLazy>
+      <PartnersSection />
 
       <FloatingWhatsApp />
 
