@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import { memo } from "react";
 
@@ -14,15 +13,9 @@ type Props = {
 
 function ProjectCard({ name, techs, cover, onOpen, fit = "cover" }: Props) {
   return (
-    <motion.button
+    <button
       onClick={onOpen}
-      className="group text-left rounded-xl border border-black/10 dark:border-white/10 overflow-hidden bg-background focus:outline-none focus:ring-2 focus:ring-brand/40"
-      whileHover={{
-        scale: 1.02,
-        boxShadow: "0 20px 70px -25px hsl(199 89% 48% / 0.5)",
-      }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="group text-left rounded-xl border border-black/10 dark:border-white/10 overflow-hidden bg-background focus:outline-none focus:ring-2 focus:ring-brand/40 transition-transform duration-300 hover:scale-[1.02] hover:shadow-[0_20px_70px_-25px_rgba(14,165,233,0.5)] active:scale-[0.98]"
     >
       <div className="relative aspect-[16/10] bg-[linear-gradient(135deg,#0ea5e933,#0000)]">
         {cover ? (
@@ -53,7 +46,7 @@ function ProjectCard({ name, techs, cover, onOpen, fit = "cover" }: Props) {
           ))}
         </div>
       </div>
-    </motion.button>
+    </button>
   );
 }
 

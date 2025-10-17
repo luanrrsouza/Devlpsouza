@@ -3,8 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 // revertendo tipos estáticos para evitar erros por enquanto
-import { Sparkles, PencilRuler, Code2, Rocket } from "lucide-react";
-import Image from "next/image";
+// ícones usados dentro de StepsSection (importados lá)
 // adiar o WhatsApp flutuante para fora do caminho crítico
 const FloatingWhatsApp = dynamic(
   () => import("@/components/FloatingWhatsApp"),
@@ -13,7 +12,7 @@ const FloatingWhatsApp = dynamic(
   }
 );
 import ProjectCard from "@/components/ProjectCard";
-import ServiceCard from "@/components/ServiceCard";
+// import ServiceCard from "@/components/ServiceCard"; // não usado
 
 const ProjectModal = dynamic(() => import("@/components/ProjectModal"), {
   ssr: false,
@@ -30,6 +29,7 @@ const AboutSection = dynamic(
         <div className="mt-6 h-40 bg-black/5 dark:bg-white/5 rounded animate-pulse" />
       </div>
     ),
+    ssr: false,
   }
 );
 const CasesSection = dynamic(
@@ -44,6 +44,7 @@ const CasesSection = dynamic(
         </div>
       </div>
     ),
+    ssr: false,
   }
 );
 const PartnersSection = dynamic(
@@ -59,6 +60,7 @@ const PartnersSection = dynamic(
         </div>
       </div>
     ),
+    ssr: false,
   }
 );
 const ContactSection = dynamic(
@@ -70,6 +72,7 @@ const ContactSection = dynamic(
         <div className="mt-8 h-48 max-w-xl bg-black/5 dark:bg-white/5 rounded mx-auto animate-pulse" />
       </div>
     ),
+    ssr: false,
   }
 );
 const OfferSection = dynamic(
@@ -85,6 +88,7 @@ const OfferSection = dynamic(
         </div>
       </div>
     ),
+    ssr: false,
   }
 );
 
@@ -103,6 +107,7 @@ const StepsSection = dynamic(
         </div>
       </div>
     ),
+    ssr: false,
   }
 );
 

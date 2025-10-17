@@ -1,37 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Sparkles, PencilRuler, Code2, Rocket } from "lucide-react";
 
 export default function StepsSection() {
   return (
-    <motion.section
+    <section
       id="passos"
       className="container mx-auto px-4 py-24 reveal border-b border-black/5 dark:border-white/10"
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <motion.h2
-        className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
+      <h2 className="text-3xl sm:text-4xl font-semibold bg-gradient-to-r from-brand to-indigo-500 bg-clip-text text-transparent">
         Nosso passo a passo juntos
-      </motion.h2>
-      <motion.div
-        className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={{
-          hidden: {},
-          show: { transition: { staggerChildren: 0.12 } },
-        }}
-      >
+      </h2>
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {[
           {
             t: "Descoberta criativa",
@@ -54,46 +34,31 @@ export default function StepsSection() {
             I: Rocket,
           },
         ].map(({ t, d, I }) => (
-          <motion.div
+          <div
             key={t}
-            className="rounded-3xl border border-black/10 dark:border-white/10 p-8 lg:p-10 bg-background shadow-sm hover:shadow-xl min-h-[260px]"
-            variants={{
-              hidden: { opacity: 0, y: 18 },
-              show: { opacity: 1, y: 0 },
-            }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="rounded-3xl border border-black/10 dark:border-white/10 p-8 lg:p-10 bg-background shadow-sm hover:shadow-xl min-h-[260px] transition-transform duration-300 hover:scale-[1.02]"
           >
-            <motion.div
-              className="h-12 w-12 rounded-xl bg-brand/10 text-brand grid place-items-center"
-              initial={{ opacity: 0, y: -6 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            >
+            <div className="h-12 w-12 rounded-xl bg-brand/10 text-brand grid place-items-center">
               <I size={20} />
-            </motion.div>
+            </div>
             <h3 className="mt-5 text-2xl font-semibold">{t}</h3>
             <p className="mt-3 text-base sm:text-lg leading-relaxed text-black/70 dark:text-white/70">
               {d}
             </p>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
       <div className="mt-12 flex items-center">
-        <motion.button
+        <button
           onClick={() => {
             const el = document.getElementById("contato");
             if (el) el.scrollIntoView({ behavior: "smooth" });
           }}
-          className="inline-flex items-center rounded-md bg-brand text-white px-6 py-3 font-medium shadow-sm"
-          whileHover={{ scale: 1.06 }}
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="inline-flex items-center rounded-md bg-brand text-white px-6 py-3 font-medium shadow-sm transition-transform duration-300 hover:scale-[1.04]"
         >
           Curtiu o processo? Vamos conversar sobre seu projeto!
-        </motion.button>
+        </button>
       </div>
-    </motion.section>
+    </section>
   );
 }

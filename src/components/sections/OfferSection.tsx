@@ -1,6 +1,4 @@
 "use client";
-
-import { motion } from "framer-motion";
 import { Globe, Smartphone, BarChart3 } from "lucide-react";
 
 type Service = {
@@ -64,30 +62,16 @@ export default function OfferSection() {
         </p>
 
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {services.map(({ icon: I, title, description, bullets }, idx) => (
-            <motion.div
+          {services.map(({ icon: I, title, description, bullets }) => (
+            <div
               key={title}
-              className="group relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-background p-6 sm:p-8 shadow-sm"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 * idx }}
-              whileHover={{ scale: 1.02 }}
+              className="group relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-background p-6 sm:p-8 shadow-sm transition-transform duration-300 hover:scale-[1.02]"
             >
               <div className="absolute inset-0 bg-[radial-gradient(800px_200px_at_var(--x,50%)_-20%,rgba(99,102,241,0.15),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="h-12 w-12 rounded-xl bg-brand/10 text-brand grid place-items-center">
                 <I className="transition-transform group-hover:-translate-y-0.5" />
               </div>
-              <h3 className="mt-5 text-2xl font-semibold">
-                <motion.span
-                  initial={{ y: 8, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, ease: "easeOut", delay: 0.02 }}
-                >
-                  {title}
-                </motion.span>
-              </h3>
+              <h3 className="mt-5 text-2xl font-semibold">{title}</h3>
               <p className="mt-3 text-base sm:text-lg leading-relaxed text-black/70 dark:text-white/70">
                 {description}
               </p>
@@ -96,7 +80,7 @@ export default function OfferSection() {
                   <li key={b}>{b}</li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
         </div>
 

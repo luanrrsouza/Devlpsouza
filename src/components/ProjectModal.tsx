@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+// Removendo framer-motion para reduzir JS; transições via CSS
 import Image, { StaticImageData } from "next/image";
 
 type Slide = {
@@ -77,172 +77,147 @@ export default function ProjectModal({
   if (!open) return null;
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          className="fixed inset-0 z-[60]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-          <div
-            className="absolute inset-0 p-4 overflow-y-auto flex items-start sm:items-center justify-center"
-            role="dialog"
-            aria-modal="true"
+    <div className="fixed inset-0 z-[60] animate-fade-in">
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+      <div
+        className="absolute inset-0 p-4 overflow-y-auto flex items-start sm:items-center justify-center"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="w-full max-w-5xl my-6 sm:my-10 rounded-2xl bg-white dark:bg-slate-900 border border-black/10 dark:border-white/10 shadow-2xl max-h-[90dvh] overflow-auto relative animate-scale-in">
+          <button
+            onClick={onClose}
+            aria-label="Fechar"
+            className="absolute right-3 top-3 rounded-md bg-black/50 text-white px-3 py-1 text-sm hover:bg-black/60"
           >
-            <motion.div
-              className="w-full max-w-5xl my-6 sm:my-10 rounded-2xl bg-white dark:bg-slate-900 border border-black/10 dark:border-white/10 shadow-2xl max-h-[90dvh] overflow-auto relative"
-              initial={{ scale: 0.96, opacity: 0.8 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.96, opacity: 0.8 }}
-              transition={{ type: "spring", stiffness: 260, damping: 22 }}
-            >
-              <button
-                onClick={onClose}
-                aria-label="Fechar"
-                className="absolute right-3 top-3 rounded-md bg-black/50 text-white px-3 py-1 text-sm hover:bg-black/60"
-              >
-                ×
-              </button>
-              <div className="flex items-start justify-between px-6 py-5 border-b border-black/10 dark:border-white/10">
-                <div>
-                  <h3 className="text-2xl font-semibold">{name}</h3>
-                  {techs.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {techs.map((t) => (
-                        <span
-                          key={t}
-                          className="text-xs bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white px-2 py-1 rounded-md transition-transform duration-200 hover:scale-[1.05] hover:shadow"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+            ×
+          </button>
+          <div className="flex items-start justify-between px-6 py-5 border-b border-black/10 dark:border-white/10">
+            <div>
+              <h3 className="text-2xl font-semibold">{name}</h3>
+              {techs.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {techs.map((t) => (
+                    <span
+                      key={t}
+                      className="text-xs bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white px-2 py-1 rounded-md transition-transform duration-200 hover:scale-[1.05] hover:shadow"
+                    >
+                      {t}
+                    </span>
+                  ))}
                 </div>
-              </div>
-
-              <div className="grid gap-6 p-6">
-                <div
-                  className="relative aspect-[16/9] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5"
-                  onTouchStart={(e) =>
-                    (touchStartX.current = e.touches[0].clientX)
-                  }
-                  onTouchEnd={(e) => {
-                    const start = touchStartX.current;
-                    if (start == null) return;
-                    const dx = e.changedTouches[0].clientX - start;
-                    if (Math.abs(dx) > 50) {
-                      if (dx < 0) {
-                        next();
-                      } else {
-                        prev();
-                      }
-                    }
-                    touchStartX.current = null;
-                  }}
-                  onClick={() => {
-                    pausedByClick.current = !pausedByClick.current;
-                  }}
-                >
-                  {slides.length === 0 ? (
-                    <div className="h-full w-full grid place-items-center">
-                      <div className="h-24 w-36 rounded-md bg-black/10 dark:bg-white/10" />
-                    </div>
-                  ) : (
-                    <>
-                      <AnimatePresence initial={false} mode="wait">
-                        <motion.div
-                          key={slides[index]?.id}
-                          className="absolute inset-0 cursor-pointer"
-                          initial={{ opacity: 0.2, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          transition={{ duration: 0.4, ease: "easeOut" }}
-                        >
-                          {slides[index]?.src ? (
-                            <Image
-                              src={
-                                slides[index]!.src as StaticImageData | string
-                              }
-                              alt=""
-                              fill
-                              className={
-                                imageFit === "contain"
-                                  ? "object-contain"
-                                  : "object-cover"
-                              }
-                              sizes="(max-width: 768px) 100vw, 1024px"
-                              priority={true}
-                              quality={80}
-                            />
-                          ) : null}
-                        </motion.div>
-                      </AnimatePresence>
-                      <button
-                        onClick={prev}
-                        aria-label="Anterior"
-                        className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
-                      >
-                        ‹
-                      </button>
-                      <button
-                        onClick={next}
-                        aria-label="Próximo"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
-                      >
-                        ›
-                      </button>
-                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                        {slides.map((_, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setIndex(i)}
-                            aria-label={`Ir para imagem ${i + 1}`}
-                            className={`h-2.5 w-2.5 rounded-full ${
-                              i === index
-                                ? "bg-white"
-                                : "bg-white/40 hover:bg-white/70"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                <div>
-                  <p className="text-sm leading-relaxed text-slate-700 dark:text-white/80">
-                    {description}
-                  </p>
-                </div>
-
-                {liveUrl ? (
-                  liveUrl.startsWith("http") ? (
-                    <div className="flex gap-3">
-                      <a
-                        href={liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center rounded-md bg-brand text-white px-4 py-2 text-sm hover:opacity-90"
-                      >
-                        Ver projeto ao vivo
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="flex gap-3">
-                      <span className="inline-flex items-center rounded-md bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-white px-4 py-2 text-sm">
-                        {liveUrl}
-                      </span>
-                    </div>
-                  )
-                ) : null}
-              </div>
-            </motion.div>
+              )}
+            </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+
+          <div className="grid gap-6 p-6">
+            <div
+              className="relative aspect-[16/9] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5"
+              onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
+              onTouchEnd={(e) => {
+                const start = touchStartX.current;
+                if (start == null) return;
+                const dx = e.changedTouches[0].clientX - start;
+                if (Math.abs(dx) > 50) {
+                  if (dx < 0) {
+                    next();
+                  } else {
+                    prev();
+                  }
+                }
+                touchStartX.current = null;
+              }}
+              onClick={() => {
+                pausedByClick.current = !pausedByClick.current;
+              }}
+            >
+              {slides.length === 0 ? (
+                <div className="h-full w-full grid place-items-center">
+                  <div className="h-24 w-36 rounded-md bg-black/10 dark:bg-white/10" />
+                </div>
+              ) : (
+                <>
+                  <div
+                    key={slides[index]?.id}
+                    className="absolute inset-0 cursor-pointer animate-slide-in"
+                  >
+                    {slides[index]?.src ? (
+                      <Image
+                        src={slides[index]!.src as StaticImageData | string}
+                        alt=""
+                        fill
+                        className={
+                          imageFit === "contain"
+                            ? "object-contain"
+                            : "object-cover"
+                        }
+                        sizes="(max-width: 768px) 100vw, 1024px"
+                        priority={false}
+                        quality={60}
+                      />
+                    ) : null}
+                  </div>
+                  <button
+                    onClick={prev}
+                    aria-label="Anterior"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={next}
+                    aria-label="Próximo"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2"
+                  >
+                    ›
+                  </button>
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                    {slides.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setIndex(i)}
+                        aria-label={`Ir para imagem ${i + 1}`}
+                        className={`h-2.5 w-2.5 rounded-full ${
+                          i === index
+                            ? "bg-white"
+                            : "bg-white/40 hover:bg-white/70"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div>
+              <p className="text-sm leading-relaxed text-slate-700 dark:text-white/80">
+                {description}
+              </p>
+            </div>
+
+            {liveUrl ? (
+              liveUrl.startsWith("http") ? (
+                <div className="flex gap-3">
+                  <a
+                    href={liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center rounded-md bg-brand text-white px-4 py-2 text-sm hover:opacity-90"
+                  >
+                    Ver projeto ao vivo
+                  </a>
+                </div>
+              ) : (
+                <div className="flex gap-3">
+                  <span className="inline-flex items-center rounded-md bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-white px-4 py-2 text-sm">
+                    {liveUrl}
+                  </span>
+                </div>
+              )
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

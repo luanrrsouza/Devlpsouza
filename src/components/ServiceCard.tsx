@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 type Props = {
   title: string;
   summary: string;
@@ -10,15 +8,9 @@ type Props = {
 
 export default function ServiceCard({ title, summary, onOpen }: Props) {
   return (
-    <motion.button
+    <button
       onClick={onOpen}
-      className="group text-left rounded-2xl border border-black/10 dark:border-white/10 bg-background p-6 sm:p-8"
-      whileHover={{
-        scale: 1.03,
-        boxShadow: "0 25px 80px -30px rgba(14,165,233,.45)",
-      }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="group text-left rounded-2xl border border-black/10 dark:border-white/10 bg-background p-6 sm:p-8 transition-transform duration-300 hover:scale-[1.03] hover:shadow-[0_25px_80px_-30px_rgba(14,165,233,.45)] active:scale-[0.98]"
     >
       <div className="h-10 w-10 rounded-lg bg-brand/10 text-brand grid place-items-center text-lg">
         ★
@@ -28,6 +20,6 @@ export default function ServiceCard({ title, summary, onOpen }: Props) {
         {summary}
       </p>
       <span className="mt-6 inline-block text-brand">Ver detalhes →</span>
-    </motion.button>
+    </button>
   );
 }

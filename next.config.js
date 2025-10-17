@@ -9,7 +9,7 @@ const nextConfig = {
     // Nota: qualities é experimental em algumas versões; mantemos básico.
   },
   experimental: {
-    optimizePackageImports: ["framer-motion", "lucide-react"],
+    optimizePackageImports: ["lucide-react"],
   },
   compress: true,
   poweredByHeader: false,
