@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
+  --background: #0a0a0a; /* fundo escuro fixo */
+  --foreground: #e5e7eb; /* texto claro fixo */
   --brand: #0ea5e9;
-  --muted: #f7f9fc;
+  --muted: #0f172a;
 }
 
 @theme inline {
@@ -16,6 +16,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Mantém escuro mesmo se o sistema estiver claro */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -29,6 +30,14 @@ body {
   color: var(--foreground);
   font-size: 18px;
   line-height: 1.6;
+}
+
+/* Tudo que for clicável deve mostrar ponteiro */
+a,
+button,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: reduce) {

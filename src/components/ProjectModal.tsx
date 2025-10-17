@@ -33,12 +33,19 @@ export default function ProjectModal({
   const [index, setIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
   const touchStartX = useRef<number | null>(null);
+  const pausedByClick = useRef<boolean>(false);
 
   useEffect(() => {
     if (!open) return;
-    intervalRef.current = window.setInterval(() => {
-      setIndex((i) => (i + 1) % Math.max(slides.length, 1));
-    }, 3000);
+    const start = () => {
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+      intervalRef.current = window.setInterval(() => {
+        if (!pausedByClick.current) {
+          setIndex((i) => (i + 1) % Math.max(slides.length, 1));
+        }
+      }, 3000);
+    };
+    start();
     return () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
     };
@@ -79,14 +86,25 @@ export default function ProjectModal({
           exit={{ opacity: 0 }}
         >
           <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-          <div className="absolute inset-0 grid place-items-center p-4">
+          <div
+            className="absolute inset-0 p-4 overflow-y-auto flex items-start sm:items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+          >
             <motion.div
-              className="w-full max-w-5xl rounded-2xl bg-white dark:bg-slate-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
+              className="w-full max-w-5xl my-6 sm:my-10 rounded-2xl bg-white dark:bg-slate-900 border border-black/10 dark:border-white/10 shadow-2xl max-h-[90dvh] overflow-auto relative"
               initial={{ scale: 0.96, opacity: 0.8 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0.8 }}
               transition={{ type: "spring", stiffness: 260, damping: 22 }}
             >
+              <button
+                onClick={onClose}
+                aria-label="Fechar"
+                className="absolute right-3 top-3 rounded-md bg-black/50 text-white px-3 py-1 text-sm hover:bg-black/60"
+              >
+                ×
+              </button>
               <div className="flex items-start justify-between px-6 py-5 border-b border-black/10 dark:border-white/10">
                 <div>
                   <h3 className="text-2xl font-semibold">{name}</h3>
@@ -103,13 +121,6 @@ export default function ProjectModal({
                     </div>
                   )}
                 </div>
-                <button
-                  onClick={onClose}
-                  aria-label="Fechar"
-                  className="rounded-md border border-black/10 dark:border-white/10 px-3 py-1 text-sm hover:bg-black/5 dark:hover:bg-white/10 transition"
-                >
-                  Fechar
-                </button>
               </div>
 
               <div className="grid gap-6 p-6">
@@ -131,6 +142,9 @@ export default function ProjectModal({
                     }
                     touchStartX.current = null;
                   }}
+                  onClick={() => {
+                    pausedByClick.current = !pausedByClick.current;
+                  }}
                 >
                   {slides.length === 0 ? (
                     <div className="h-full w-full grid place-items-center">
@@ -141,7 +155,7 @@ export default function ProjectModal({
                       <AnimatePresence initial={false} mode="wait">
                         <motion.div
                           key={slides[index]?.id}
-                          className="absolute inset-0"
+                          className="absolute inset-0 cursor-pointer"
                           initial={{ opacity: 0.2, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -20 }}
