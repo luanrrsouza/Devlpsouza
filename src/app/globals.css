@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a; /* fundo escuro fixo */
-  --foreground: #e5e7eb; /* texto claro fixo */
+  --background: #ffffff;
+  --foreground: #111827;
   --brand: #0ea5e9;
-  --muted: #0f172a;
+  --muted: #f7f9fc;
 }
 
 @theme inline {
@@ -16,7 +16,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Mantém escuro mesmo se o sistema estiver claro */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
