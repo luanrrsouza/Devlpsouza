@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     const { error } = await resend.emails.send({
       from: "Devlpsouza <onboarding@resend.dev>",
       to: ["luanrrdsouza@gmail.com"],
-      reply_to: email,
+      replyTo: email,
       subject: "Novo contato: Devlpsouza",
       react: ContactEmail({ name, email, message, whatsapp }),
     });
