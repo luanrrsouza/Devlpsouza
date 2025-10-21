@@ -9,6 +9,25 @@ export default function ContactSection() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [whatsInput, setWhatsInput] = useState("");
 
+  function formatWhatsappForDisplay(input: string): string {
+    let digits = input.replace(/\D/g, "");
+    if (digits.startsWith("55") && digits.length > 11) {
+      digits = digits.slice(2);
+    }
+    // Limita a 11 dígitos (DDD + 9) para exibição
+    if (digits.length > 11) digits = digits.slice(0, 11);
+
+    if (digits.length <= 2) return `(${digits}`;
+    const ddd = digits.slice(0, 2);
+    const rest = digits.slice(2);
+
+    if (rest.length <= 4) return `(${ddd}) ${rest}`;
+    if (rest.length <= 8)
+      return `(${ddd}) ${rest.slice(0, 4)}-${rest.slice(4)}`;
+    // 9 dígitos (celular)
+    return `(${ddd}) ${rest.slice(0, 5)}-${rest.slice(5)}`;
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("loading");
@@ -106,10 +125,11 @@ export default function ContactSection() {
             placeholder="WhatsApp (com DDD)"
             className="rounded-md border px-4 py-3 bg-background"
             value={whatsInput}
-            onChange={(e) => setWhatsInput(e.target.value)}
+            onChange={(e) =>
+              setWhatsInput(formatWhatsappForDisplay(e.target.value))
+            }
             disabled={isLoading}
-            pattern="^\+?\d{12,13}$|^\d{10,11}$"
-            title="Informe um número válido com DDD. Ex: 11987654321"
+            autoComplete="tel"
           />
           <textarea
             name="message"
